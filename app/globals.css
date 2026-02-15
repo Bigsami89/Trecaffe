@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    /* Deep forest green - Primary brand color from logo */
+    --background: 32 15% 96%;
+    --foreground: 168 35% 15%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 168 35% 15%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 168 35% 15%;
+    
+    /* Rich espresso brown - Primary accent */
+    --primary: 168 35% 20%;
+    --primary-foreground: 32 25% 95%;
+    
+    /* Warm cream - Secondary */
+    --secondary: 32 25% 88%;
+    --secondary-foreground: 168 35% 20%;
+    
+    /* Soft sage - Muted */
+    --muted: 150 15% 90%;
+    --muted-foreground: 168 25% 35%;
+    
+    /* Terracotta - Accent */
+    --accent: 15 55% 65%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 150 15% 85%;
+    --input: 150 15% 85%;
+    --ring: 168 35% 20%;
+    
+    --radius: 0.75rem;
+  }
+  
+  .dark {
+    --background: 168 35% 8%;
+    --foreground: 32 25% 95%;
+    
+    --card: 168 30% 12%;
+    --card-foreground: 32 25% 95%;
+    
+    --popover: 168 30% 10%;
+    --popover-foreground: 32 25% 95%;
+    
+    --primary: 32 25% 88%;
+    --primary-foreground: 168 35% 15%;
+    
+    --secondary: 168 25% 18%;
+    --secondary-foreground: 32 25% 95%;
+    
+    --muted: 168 20% 20%;
+    --muted-foreground: 150 15% 70%;
+    
+    --accent: 15 50% 55%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 168 20% 25%;
+    --input: 168 20% 25%;
+    --ring: 32 25% 88%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
