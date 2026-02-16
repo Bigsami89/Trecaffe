@@ -2,13 +2,36 @@
 
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
-import { Coffee, MapPin, Clock, Instagram, Facebook, Phone } from 'lucide-react'
+import { Coffee, MapPin, Clock, Instagram, Facebook, Phone, MessageCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { IMAGES } from '@/lib/images'
+import { CoffeeLogo } from '@/components/ui/coffee-logo'
+
+console.log("Loading Page Component");
+
+const TestimonialsSection = dynamic(() =>
+  import('@/components/sections/testimonials').then(mod => mod.TestimonialsSection),
+  {
+    loading: () => <div className="h-96 w-full animate-pulse bg-muted rounded-2xl" />,
+    ssr: false
+  }
+)
+import dynamic from 'next/dynamic'
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background relative leading-relaxed">
+      {/* WhatsApp Floating Button */}
+      <a
+        href="https://wa.me/529992514588?text=Hola,%20me%20gustaría%20más%20información"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors animate-in fade-in zoom-in duration-300"
+        aria-label="Contactar por WhatsApp"
+      >
+        <MessageCircle className="w-8 h-8 text-white" />
+      </a>
       {/* Navigation */}
       <motion.nav
         initial={{ y: -100 }}
@@ -17,7 +40,7 @@ export default function Page() {
       >
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="TRECAFFE" width={120} height={120} className="h-16 w-auto" priority />
+            <span className="font-serif text-2xl font-bold text-primary">TRECAFFÉ</span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <Link href="#menu" className="text-sm font-medium text-foreground hover:text-accent transition-colors">
@@ -29,8 +52,8 @@ export default function Page() {
             <Link href="#ubicacion" className="text-sm font-medium text-foreground hover:text-accent transition-colors">
               Ubicación
             </Link>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Reservar
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Link href="https://wa.me/529992514588" target="_blank">Reservar</Link>
             </Button>
           </div>
         </div>
@@ -52,15 +75,15 @@ export default function Page() {
               {'Café de especialidad tostado artesanalmente'}
             </p>
             <p className="text-lg text-muted-foreground mb-10 leading-relaxed max-w-xl">
-              Tres generaciones de maestros cafeteros italianos, granos seleccionados de origen único, 
+              Tres generaciones de maestros cafeteros italianos, granos seleccionados de origen único,
               y el calor de Mérida en cada taza. Esta es tu nueva casa del café.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8">
-                Visítanos Hoy
+              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8">
+                <Link href="#ubicacion">Visítanos Hoy</Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-2 text-lg px-8">
-                Ver Ubicación
+              <Button asChild size="lg" variant="outline" className="border-2 text-lg px-8">
+                <Link href="#ubicacion">Ver Ubicación</Link>
               </Button>
             </div>
           </motion.div>
@@ -72,9 +95,9 @@ export default function Page() {
             className="relative"
           >
             <div className="relative aspect-square rounded-3xl overflow-hidden">
-              <Image 
-                src="/barista-work.jpg" 
-                alt="Barista preparando café artesanal" 
+              <Image
+                src={IMAGES.hero}
+                alt="Barista preparando café artesanal"
                 fill
                 className="object-cover"
               />
@@ -165,29 +188,29 @@ export default function Page() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { 
-                name: 'Espresso Clásico', 
-                price: '$45', 
+              {
+                name: 'Espresso Clásico',
+                price: '$45',
                 desc: 'Shot perfecto de espresso italiano. Crema dorada, cuerpo intenso, notas de chocolate amargo',
-                image: '/coffee-espresso.jpg'
+                image: IMAGES.menu.espresso
               },
-              { 
-                name: 'Cappuccino Italiano', 
-                price: '$65', 
+              {
+                name: 'Cappuccino Italiano',
+                price: '$70',
                 desc: 'Espresso doble con espuma de leche sedosa. El equilibrio perfecto entre café y cremosidad',
-                image: '/coffee-cappuccino.jpg'
+                image: IMAGES.menu.cappuccino
               },
-              { 
-                name: 'Latte de Miel Yucateca', 
-                price: '$75', 
+              {
+                name: 'Latte de Miel Yucateca',
+                price: '$75',
                 desc: 'Nuestra creación exclusiva. Espresso con miel de abeja melipona y leche vaporizada',
-                image: '/coffee-latte.jpg'
+                image: IMAGES.menu.latte
               },
-              { 
-                name: 'Affogato', 
-                price: '$85', 
+              {
+                name: 'Affogato',
+                price: '$80',
                 desc: 'Gelato artesanal de vainilla ahogado en espresso caliente. El postre perfecto',
-                image: '/coffee-affogato.jpg'
+                image: IMAGES.menu.affogato
               },
             ].map((item, index) => (
               <motion.div
@@ -199,10 +222,10 @@ export default function Page() {
                 className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:shadow-xl transition-all duration-300"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative">
+                <div className="relative text-center p-6">
                   <div className="relative aspect-square mb-4 rounded-xl overflow-hidden">
-                    <Image 
-                      src={item.image} 
+                    <Image
+                      src={item.image}
                       alt={item.name}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -226,8 +249,8 @@ export default function Page() {
             viewport={{ once: true }}
             className="text-center mt-12"
           >
-            <Button size="lg" variant="outline" className="border-2 text-lg px-8">
-              Ver Menú Completo
+            <Button asChild size="lg" variant="outline" className="border-2 text-lg px-8">
+              <Link href="/menu">Ver Menú Completo</Link>
             </Button>
           </motion.div>
         </div>
@@ -257,8 +280,8 @@ export default function Page() {
               viewport={{ once: true }}
               className="relative aspect-[4/3] rounded-2xl overflow-hidden"
             >
-              <Image 
-                src="/cafe-interior.jpg" 
+              <Image
+                src={IMAGES.interior}
                 alt="Interior de TRECAFFE"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-700"
@@ -275,8 +298,8 @@ export default function Page() {
               transition={{ delay: 0.1 }}
               className="relative aspect-[4/3] rounded-2xl overflow-hidden"
             >
-              <Image 
-                src="/barista-work.jpg" 
+              <Image
+                src={IMAGES.hero}
                 alt="Barista trabajando"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-700"
@@ -294,8 +317,8 @@ export default function Page() {
             className="text-center"
           >
             <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto leading-relaxed">
-              Mesas amplias con enchufes, WiFi ultrarrápido, aire acondicionado perfecto, 
-              plantas que purifican el aire, y una playlist curada que nunca molesta. 
+              Mesas amplias con enchufes, WiFi ultrarrápido, aire acondicionado perfecto,
+              plantas que purifican el aire, y una playlist curada que nunca molesta.
               Este es el lugar donde querrás pasar tus mañanas.
             </p>
           </motion.div>
@@ -303,80 +326,7 @@ export default function Page() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="font-serif text-5xl md:text-6xl font-bold text-foreground mb-6 text-balance">
-              {'Lo Que Dicen Nuestros Clientes'}
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
-              {'Más de 2,000 cafés servidos cada mes. 4.9 estrellas en Google'}
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {[
-              {
-                name: 'Ana Martínez',
-                role: 'Arquitecta',
-                text: 'El mejor café de Mérida, sin duda. El latte de miel yucateca es mi nuevo favorito. Vengo todas las mañanas antes de ir al trabajo.',
-                rating: 5
-              },
-              {
-                name: 'Roberto García',
-                role: 'Emprendedor',
-                text: 'Trabajo desde aquí 3-4 días a la semana. El WiFi es excelente, el ambiente perfecto para concentrarse, y el café... simplemente espectacular.',
-                rating: 5
-              },
-              {
-                name: 'Sofia Herrera',
-                role: 'Estudiante de Diseño',
-                text: 'Me encanta todo: la decoración, la música, la atención. Los baristas saben mi orden de memoria. Es como mi segunda casa.',
-                rating: 5
-              },
-            ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-card p-8 rounded-2xl border border-border"
-              >
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 fill-accent" viewBox="0 0 20 20">
-                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-muted-foreground mb-6 leading-relaxed italic">
-                  {`"${testimonial.text}"`}
-                </p>
-                <div>
-                  <p className="font-semibold text-foreground">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-primary/5 rounded-2xl p-8 text-center"
-          >
-            <p className="text-3xl font-bold text-foreground mb-2">4.9/5.0</p>
-            <p className="text-muted-foreground">Basado en más de 350 reseñas en Google</p>
-          </motion.div>
-        </div>
-      </section>
+      <TestimonialsSection />
 
       {/* Story Section */}
       <section id="nosotros" className="py-24 bg-primary text-primary-foreground">
@@ -388,8 +338,8 @@ export default function Page() {
               viewport={{ once: true }}
               className="relative aspect-[4/3] rounded-3xl overflow-hidden"
             >
-              <Image 
-                src="/cafe-interior.jpg" 
+              <Image
+                src={IMAGES.interior}
                 alt="Historia de TRECAFFE"
                 fill
                 className="object-cover"
@@ -405,17 +355,17 @@ export default function Page() {
                 {'Tres Generaciones, Una Pasión'}
               </h2>
               <p className="text-lg leading-relaxed opacity-90 mb-6">
-                Mi nonno me enseñó que el café no es solo una bebida, es un ritual. 
-                Crecí en una pequeña cafetería en Roma, viendo cómo cada espresso se preparaba con devoción. 
+                Mi nonno me enseñó que el café no es solo una bebida, es un ritual.
+                Crecí en una pequeña cafetería en Roma, viendo cómo cada espresso se preparaba con devoción.
                 Cuando llegué a Mérida, me enamoré de la ciudad y su gente.
               </p>
               <p className="text-lg leading-relaxed opacity-90 mb-6">
-                TRECAFFE nace de ese amor: tres generaciones de conocimiento italiano, 
-                combinadas con el espíritu acogedor de Yucatán. Aquí no vendemos café, 
+                TRECAFFE nace de ese amor: tres generaciones de conocimiento italiano,
+                combinadas con el espíritu acogedor de Yucatán. Aquí no vendemos café,
                 compartimos historias, creamos momentos, construimos comunidad.
               </p>
               <p className="text-lg leading-relaxed opacity-90 mb-8">
-                Cada grano es seleccionado personalmente. Cada tostado es supervisado con cuidado. 
+                Cada grano es seleccionado personalmente. Cada tostado es supervisado con cuidado.
                 Cada barista es entrenado en el arte tradicional. Porque aquí, el café es familia.
               </p>
               <p className="text-xl font-serif italic opacity-95">
@@ -459,8 +409,8 @@ export default function Page() {
                     Dirección
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Calle 47 x 60, Centro Histórico<br />
-                    Mérida, Yucatán, México
+                    Residencial Galerías, Calle 20A, C. 5A 297<br />
+                    97204 Mérida, Yuc.
                   </p>
                 </div>
               </div>
@@ -474,8 +424,7 @@ export default function Page() {
                     Horario
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Lunes a Viernes: 7:00 AM - 10:00 PM<br />
-                    Sábado y Domingo: 8:00 AM - 11:00 PM
+                    Lunes a Domingo: 8:00 AM - 10:00 PM
                   </p>
                 </div>
               </div>
@@ -489,7 +438,7 @@ export default function Page() {
                     Contacto
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Tel: (999) 123-4567<br />
+                    Tel: +52 999 251 4588<br />
                     info@trecaffe.com.mx
                   </p>
                 </div>
@@ -508,39 +457,14 @@ export default function Page() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-accent text-accent-foreground">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h2 className="font-serif text-5xl md:text-6xl font-bold mb-6 text-balance">
-              {'Tu Próximo Café Favorito Te Espera'}
-            </h2>
-            <p className="text-xl mb-10 text-pretty leading-relaxed">
-              {'Estamos a solo 5 minutos del centro. Abiertos todos los días. Tu mesa (y tu espresso perfecto) te están esperando.'}
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button size="lg" variant="secondary" className="text-lg px-12">
-                Ver Ubicación
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg px-12 border-2 border-accent-foreground text-accent-foreground hover:bg-accent-foreground/10">
-                Llamar Ahora
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+
 
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <Image src="/logo.png" alt="TRECAFFE" width={120} height={120} className="h-16 w-auto mb-4 brightness-0 invert" />
+              <Image src={IMAGES.logo} alt="TRECAFFE" width={120} height={120} className="h-16 w-auto mb-4 brightness-0 invert" />
               <p className="text-sm opacity-80 leading-relaxed">
                 {'Café italiano con alma yucateca'}
               </p>
@@ -599,12 +523,19 @@ export default function Page() {
 
 function MapPlaceholder() {
   return (
-    <div className="w-full h-full bg-gradient-to-br from-muted to-secondary flex items-center justify-center">
-      <div className="text-center p-12">
-        <MapPin className="w-24 h-24 text-primary mx-auto mb-4 opacity-20" />
-        <p className="font-serif text-2xl text-foreground/40">{'Mérida, Yucatán'}</p>
-        <p className="text-sm text-muted-foreground mt-2">{'Calle 47 x 60, Centro'}</p>
-      </div>
+    <div className="w-full h-full bg-muted min-h-[400px]">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d59589.9548083558!2d-89.6882616!3d21.0177893!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f56759881f414bb%3A0x5db8d558b598f47c!2zVHJlY2FmZsOpIC0gTcOpcmlkYQ!5e0!3m2!1ses-419!2smx!4v1771195876479!5m2!1ses-419!2smx"
+        width="100%"
+        height="100%"
+        style={{ border: 0 }}
+        allowFullScreen={true}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        title="Ubicación de TRECAFFÉ"
+        className="grayscale hover:grayscale-0 transition-all duration-500"
+      ></iframe>
     </div>
   )
 }
+
